@@ -33,17 +33,18 @@
                 <label>{{ __('カテゴリー') }}
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release1" value="野菜"
+                            {{--                                       既定で一つを checked --}}
                             {{ old('category_id') == '野菜' ? 'checked' : '' }} checked>
                         <label for="release1" class="form-check-label">野菜</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release2" value="タンパク質"
-                            {{ old('category_id') == 'タンパク質' ? 'checked' : '' }} checked>
+                            {{ old('category_id') == 'タンパク質' ? 'checked' : '' }}>
                         <label for="release2" class="form-check-label">タンパク質</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release3" value="炭水化物"
-                            {{ old('category_id') == '炭水化物' ? 'checked' : '' }} checked>
+                            {{ old('category_id') == '炭水化物' ? 'checked' : '' }}>
                         <label for="release3" class="form-check-label">炭水化物</label>
                     </div>
                 </label>

@@ -16,7 +16,7 @@
         @endif --}}
         <x-validation-errors :errors="$errors" />
 
-
+        {{-- タイトル --}}
         <form action="{{ route('meals.update', $meal) }}" method="POST" enctype="multipart/form-data"
             class="rounded pt-3 pb-8 mb-4">
             @csrf
@@ -30,27 +30,28 @@
                     required placeholder="タイトル" value="{{ old('title', $meal->title) }}">
             </div>
 
-            {{-- ラジオボタンhttps://qiita.com/yusuke___web/items/9ee65ef9f25045c12284 --}}
+            {{-- ラジオボタンhttps://qiita.com/yusuke___web/items/9ee65ef9f25045c12284--}}
             <div class="form-group">
                 <label>{{ __('カテゴリー') }}
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release1" value="野菜"
-                            {{ old('category_id', $meal->release) == '野菜' ? 'checked' : '' }}>
+                            {{ old('category_id', $meal->category_id) == '野菜' ? 'checked' : '' }}>
                         <label for="release1" class="form-check-label">野菜</label>
-                    </div>
+                    </div> 
                     <div class="form-check form-check-inline">
-                        <input type="radio" name="category_id" class="form-check-input" id="release2" value="タンパク質"
-                            {{ old('category_id', $meal->release) == 'タンパク質' ? 'checked' : '' }}>
+                        <input type="radio" name="category_id" class="form-check-input" id="release2" value="タンパク質" 
+                            {{ old('category_id', $meal->category_id) == 'タンパク質' ? 'checked' : '' }}>
                         <label for="release2" class="form-check-label">タンパク質</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release3" value="炭水化物"
-                            {{ old('category_id', $meal->release) == '炭水化物' ? 'checked' : '' }}>
+                            {{ old('category_id', $meal->category_id) == '炭水化物' ? 'checked' : '' }}> 
                         <label for="release3" class="form-check-label">炭水化物</label>
                     </div>
                 </label>
             </div>
 
+            {{-- 詳細 --}}
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm mb-2" for="body">
                     詳細
@@ -59,6 +60,7 @@
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
                     required placeholder="詳細">{{ old('body', $meal->body) }}</textarea>
             </div>
+            {{-- 画像 --}}
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm mb-2" for="image">
                     食事の画像
