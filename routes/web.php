@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [MealController::class, 'index'])
-   ->name('root');
+    ->name('root');
 
 Route::get('/dashboard', function () {
-      return view('dashboard');
-  })->middleware(['auth'])->name('dashboard');
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::resource('meals', MealController::class)
     ->only(['store', 'create', 'update', 'destory', 'edit'])
@@ -29,4 +29,4 @@ Route::resource('meals', MealController::class)
 Route::resource('meals', MealController::class)
     ->only(['show', 'index']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -10,6 +10,12 @@ class Meal extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'body',
+        'category_id',
+    ];
+
     public function user()
     {
         return $this->belongsto(User::class);
