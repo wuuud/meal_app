@@ -114,7 +114,9 @@ class MealController extends Controller
 
         $file = $request->file('image');
         if ($file) {
-            $delete_file_path = 'images/meals/' . $meal->image;
+            //$delete_file_path = 'images/meals/' . $meal->image;
+            // destoryと同時にアクセサを追加 Meal.phpに記載
+            $delete_file_path = $meal->image_path;
             $meal->image = self::createFileName($file);
         }
         $meal->fill($request->all());
@@ -135,7 +137,9 @@ class MealController extends Controller
                 // 画像削除
                 if (!Storage::delete($delete_file_path)) {
                     //アップロードした画像を削除する
-                    Storage::delete('images/meals/' . $meal->image);
+                    // destrouとともに アクセサ
+                    // Storage::delete('images/meals/' . $meal->image);
+                    Storage::delete($meal->image_path);
                     //例外を投げてロールバックさせる
                     throw new \Exception('画像ファイルの削除に失敗しました。');
                 }
@@ -158,31 +162,34 @@ class MealController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(meal $meal)
+    public function destroy($id)
     {
+        $meal = Meal::find($id);
 
-        // // トランザクション開始
-        // DB::beginTransaction();
-        // try {
-        //     $meal->delete();
+        // トランザクション開始
+        DB::beginTransaction();
+        try {
+            $meal->delete();
 
-        //     // 画像削除.$meal->image->imade_pathはmeal.phpに定義済。
-        //     if (!Storage::delete($meal->image->imade_path)) {
-        //         // 例外を投げてロールバックさせる
-        //         throw new \Exception('画像の削除に失敗しました。');
-        //     }
+            // 画像削除
+            // アクセサif (!Storage::delete('images/meals/' . $meal->image)) {
+            if (!Storage::delete($meal->image_path)) {
+                // 例外を投げてロールバックさせる
+                throw new \Exception('画像ファイルの削除に失敗しました。');
+            }
 
-        //     // トランザクション終了(成功)
-        //     DB::commit();
-        // } catch (\Exception $e) {
-        //     // トランザクション終了(失敗)
-        //     DB::rollback();
-        //     return back()->withInput()->withErrors($e->getMessage());
-        // }
-
+            // トランザクション終了(成功)
+            DB::commit();
+        } catch (\Exception $e) {
+            // トランザクション終了(失敗)
+            DB::rollback();
+            return back()->withInput()->withErrors($e->getMessage());
+        }
         return redirect()->route('meals.index')
-            ->with('notice', '食事記録を削除しました');
+            ->with('notice', '記事を削除しました');
     }
+
+
 
     private static function createFileName($file)
     {       

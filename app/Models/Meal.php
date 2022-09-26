@@ -21,14 +21,17 @@ class Meal extends Model
         return $this->belongsto(User::class);
     }
 
-    public function image_url()
+    public function getImageUrlAttribute()
     {
-        return Storage::url('images/meals/' . $this->image);
+        // 削除するStorage::delete('images/posts/' . $post->image)の'images/posts/'のimage_urlの内容と重複する部分があるため、
+        // アクセサを追加して重複する部分をまとめる
+        //return Storage::url('images/meals/' . $this->image);
+        return Storage::url($this->image_path);
     }
     // titleやbody、imageは$post->titleのように、括弧がなくても呼び出すことが可能です。
     // image_urlも同じようにするには、モデルにアクセサを定義
-    public function getImageUrlAttribute()
+    public function getImagePathAttribute()
     {
-        return Storage::url('images/meals/' . $this->image);
+        return 'images/meals/' . $this->image;
     }
 }
