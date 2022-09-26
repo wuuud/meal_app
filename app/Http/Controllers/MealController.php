@@ -51,7 +51,7 @@ class MealController extends Controller
             $meal->save();
 
             // 画像アップロード
-            if (!Storage::putFileAs('images/posts', $file, $meal->image)) {
+            if (!Storage::putFileAs('images/meals', $file, $meal->image)) {
                 // 例外を投げてロールバックさせる
                 throw new \Exception('画像ファイルの保存に失敗しました。');
             }
@@ -65,7 +65,9 @@ class MealController extends Controller
         }
 
         return redirect()
-            ->route('meals.show', $meal);
+            ->route('meals.show', $meal)
+            // フラッシュメッセージの追加 UXユーザーエクスペリエンス的に良くする
+            ->with('notice', '食事記録を登録しました！');
     }
 
     /**
@@ -74,9 +76,12 @@ class MealController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(meal $meal)
     {
-        return view('meals.show');
+        
+        // 現在時刻の設定https://qiita.com/kohboh/items/0e255dc3bba067bc447c
+        $today = now(); 
+        return view('meals.show')->with(compact('meal', 'today'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -105,8 +110,29 @@ class MealController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(meal $meal)
     {
-        //
+        
+        // // トランザクション開始
+        // DB::beginTransaction();
+        // try {
+        //     $meal->delete();
+
+        //     // 画像削除.$meal->image->imade_pathはmeal.phpに定義済。
+        //     if (!Storage::delete($meal->image->imade_path)) {
+        //         // 例外を投げてロールバックさせる
+        //         throw new \Exception('画像の削除に失敗しました。');
+        //     }
+
+        //     // トランザクション終了(成功)
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     // トランザクション終了(失敗)
+        //     DB::rollback();
+        //     return back()->withInput()->withErrors($e->getMessage());
+        // }
+
+        return redirect()->route('meals.index')
+            ->with('notice', '食事記録を削除しました');
     }
 }

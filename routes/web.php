@@ -23,7 +23,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::resource('meals', MealController::class)
-    ->only(['store', 'create', 'update', 'destory', 'edit'])
+    ->only(['store', 'create', 'update', 'destroy', 'edit'])
     ->middleware('auth');
 
 Route::resource('meals', MealController::class)

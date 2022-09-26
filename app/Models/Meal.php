@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Meal extends Model
 {
@@ -19,5 +19,16 @@ class Meal extends Model
     public function user()
     {
         return $this->belongsto(User::class);
+    }
+
+    public function image_url()
+    {
+        return Storage::url('images/meals/' . $this->image);
+    }
+    // titleやbody、imageは$post->titleのように、括弧がなくても呼び出すことが可能です。
+    // image_urlも同じようにするには、モデルにアクセサを定義
+    public function getImageUrlAttribute()
+    {
+        return Storage::url('images/meals/' . $this->image);
     }
 }
