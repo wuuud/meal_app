@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MealController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,12 @@ Route::get('/', [MealController::class, 'index'])
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/meals/like/{id}', [LikeController::class, 'like'])
+    ->name('meals.like');
+
+Route::get('/meals/unlike/{id}', [LikeController::class, 'unlike'])
+    ->name('rmeals.unlike');
 
 Route::resource('meals', MealController::class)
     ->only(['store', 'create', 'update', 'destroy', 'edit'])

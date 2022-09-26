@@ -25,7 +25,6 @@
             <h1 class="font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl">{{ $meal->title }}
             </h1>
             <p>
-                <span class="text-gray-600">投稿者：</span>
                 <span class="font-bold">{{ $meal->user->name }}</span>
             </p>
             {{-- 現在時刻 --}}
@@ -49,11 +48,56 @@
             変更前② <img src="{{ $meal->image_url() }}">
             title,body,imageのように()がなくても呼び出せるようにモデルにアクセサを定義前 --}}
             {{-- public function getImageUrlAttribute()
-    {
-        return Storage::url('images/meals/' . $this->image);
-    } --}}
+            {return Storage::url('images/meals/' . $this->image); --}}
             <img src="{{ $meal->image_url }}" alt="" class="mb-4">
             <p class="text-gray-700 text-base">{!! nl2br(e($meal->body)) !!}</p>
+
+
+            {{-- いいね https://qiita.com/phper_sugiyama/items/9a4088d1ca816a7e3f29--}}
+            <div>
+                {{-- ① いいね カウント
+                <p class="text-blue-600/100 font-bold">
+                    お気に入り数：{{ $meal->likes->count() }}
+                </p> --}}
+                
+                {{-- ② ボタン --}}
+                <div>
+                    @if ($meal->is_liked_by_auth_user())
+                        <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}" class="btn btn-success btn-sm">
+                            いいね
+                        <span class="badge">
+                            {{ $meal->likes->count() }}
+                        </span>
+                        </a>
+                    @else
+                        <a href="{{ route('meals.like', ['id' => $meal->id]) }}" class="btn btn-secondary btn-sm">
+                            いいね
+                        <span class="badge">
+                            {{ $meal->likes->count() }}
+                        </span>
+                        </a>
+                    @endif
+                </div>
+                
+                {{-- ③ ボタン 削除ボタンを変更 --}}
+                @can('like', $meal)
+                <form action="{{ route('meals.like', $id) }}" method="post">
+                    @csrf
+                    <input type="submit" value="お気に入り"
+                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                </form>
+                @endcan
+            </div>
+
+
+            {{--  いいね
+            @can('like', $like)
+                <a href="{{ route('likes.like', $like) }}"
+                    class="bg-violet-600 hover:bg-violet-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2">お気に入り</a>
+            @endcan --}}
+        
+        
+        
         </article>
         <div class="flex flex-row text-center my-4">
             {{-- ポリシー適応前  

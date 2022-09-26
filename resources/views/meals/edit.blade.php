@@ -60,6 +60,12 @@
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
                     required placeholder="詳細">{{ old('body', $meal->body) }}</textarea>
             </div>
+            {{-- いいね --}}
+            <div>
+                <p class="text-blue-600/100 font-bold">
+                    お気に入り数：{{ $meal->likes->count() }}
+                </p>
+            </div>
             {{-- 画像 --}}
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm mb-2" for="image">
