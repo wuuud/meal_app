@@ -16,8 +16,14 @@ class MealController extends Controller
      */
     public function index()
     {
-
-        return view('meals.index');
+    // Post::latest()メソッドでcreated_atの降順で
+    // データを取得するクエリを生成します。
+    // get()メソッドで、生成したクエリでデータを取得
+    // ２.$meals = Meal::latest()->get();
+    // 3.$meals = Meal::latest()->simplePaginate(4);
+    // N+1問題の解決のため、Postモデルに関連するユーザー情報を取得したいので、Meal::with('user')
+    $meals = Meal::with('user')->latest()->paginate(4);
+    return view('meals.index')->with(compact('meals'));
     }
 
     /**
