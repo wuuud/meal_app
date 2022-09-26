@@ -80,13 +80,13 @@
                 </div>
                 
                 {{-- ③ ボタン 削除ボタンを変更 --}}
-                @can('like', $meal)
+                {{-- @can('like', $like)
                 <form action="{{ route('meals.like', $id) }}" method="post">
                     @csrf
                     <input type="submit" value="お気に入り"
                 class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 </form>
-                @endcan
+                @endcan --}}
             </div>
 
 
