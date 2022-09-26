@@ -2,7 +2,7 @@
     <div class="container lg:w-1/2 md:w-4/5 w-11/12 mx-auto mt-8 px-8 bg-white shadow-md">
         <h2 class="text-center text-lg font-bold pt-6 tracking-widest">食事記録投稿</h2>
 
-        @if ($errors->any())
+        {{-- @if ($errors->any())
             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
                 <p>
                     <b>{{ count($errors) }}件のエラーがあります。</b>
@@ -13,7 +13,9 @@
                     @endforeach
                 </ul>
             </div>
-        @endif
+        @endif --}}
+        <x-validation-errors :errors="$errors" />
+
 
         <form action="{{ route('meals.store') }}" method="POST" enctype="multipart/form-data"
             class="rounded pt-3 pb-8 mb-4">
@@ -36,7 +38,7 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release2" value="タンパク質"
-                            {{ old('category_id') == 'タンパク質' ? 'checked' : '' }}>
+                            {{ old('category_id') == 'タンパク質' ? 'checked' : '' }} checked>
                         <label for="release2" class="form-check-label">タンパク質</label>
                     </div>
                     <div class="form-check form-check-inline">
