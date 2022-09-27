@@ -15,7 +15,6 @@ class CreateLikesTable extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('like_count');
             $table->foreignId('meal_id')
                 ->constrained()
                 ->cascadeOnUpdate()

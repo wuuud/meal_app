@@ -35,7 +35,7 @@
                         </p>
                         <img class="w-full mb-2" src="{{ $meal->image_url }}" alt="">
                         <p class="text-gray-700 text-base">{{ Str::limit($meal->body, 50) }}</p>                        
-                        {{-- いいね --}}
+                        {{-- お気に入り数の表示 --}}
                         <p class="text-blue-600/100 font-bold">お気に入り数：{{ $meal->likes->count() }}</p>
                     </a>
                 </article>

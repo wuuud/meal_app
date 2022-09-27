@@ -51,54 +51,34 @@
             {return Storage::url('images/meals/' . $this->image); --}}
             <img src="{{ $meal->image_url }}" alt="" class="mb-4">
             <p class="text-gray-700 text-base">{!! nl2br(e($meal->body)) !!}</p>
+            <br>
 
-
-            {{-- いいね https://qiita.com/phper_sugiyama/items/9a4088d1ca816a7e3f29--}}
+            {{-- お気に入り https://qiita.com/phper_sugiyama/items/9a4088d1ca816a7e3f29--}}
             <div>
-                {{-- ① いいね カウント
-                <p class="text-blue-600/100 font-bold">
-                    お気に入り数：{{ $meal->likes->count() }}
-                </p> --}}
-                
-                {{-- ② ボタン --}}
+                {{-- ②お気に入りボタン --}}
                 <div>
                     @if ($meal->is_liked_by_auth_user())
-                        <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}" class="btn btn-success btn-sm">
-                            いいね
-                        <span class="badge">
-                            {{ $meal->likes->count() }}
-                        </span>
+                        <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}" 
+                        class="bg-pink-400 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2">
+                            お気に入り削除
+                        {{--カウントはボタンにつけない <span class="badge">{{ $meal->likes->count() }}</span> --}}
                         </a>
                     @else
-                        <a href="{{ route('meals.like', ['id' => $meal->id]) }}" class="btn btn-secondary btn-sm">
-                            いいね
-                        <span class="badge">
-                            {{ $meal->likes->count() }}
-                        </span>
+                        <a href="{{ route('meals.like', ['id' => $meal->id]) }}" 
+                        class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2">
+                            お気に入り
+                        {{--カウントはボタンにつけない <span class="badge">{{ $meal->likes->count() }}</span> --}}
                         </a>
                     @endif
+                    <br>
+                    <br>
+
+                {{-- ①お気に入り数の表示 --}}
+                    <p class="text-blue-600/100 font-bold">お気に入り数：{{ $meal->likes->count() }}</p> 
                 </div>
-                
-                {{-- ③ ボタン 削除ボタンを変更 --}}
-                {{-- @can('like', $like)
-                <form action="{{ route('meals.like', $id) }}" method="post">
-                    @csrf
-                    <input type="submit" value="お気に入り"
-                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                </form>
-                @endcan --}}
             </div>
-
-
-            {{--  いいね
-            @can('like', $like)
-                <a href="{{ route('likes.like', $like) }}"
-                    class="bg-violet-600 hover:bg-violet-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2">お気に入り</a>
-            @endcan --}}
-        
-        
-        
         </article>
+
         <div class="flex flex-row text-center my-4">
             {{-- ポリシー適応前  
             <a href="{{ route('meals.edit', $meal) }}"

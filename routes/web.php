@@ -27,7 +27,7 @@ Route::get('/meals/like/{id}', [LikeController::class, 'like'])
     ->name('meals.like');
 
 Route::get('/meals/unlike/{id}', [LikeController::class, 'unlike'])
-    ->name('rmeals.unlike');
+    ->name('meals.unlike');
 
 Route::resource('meals', MealController::class)
     ->only(['store', 'create', 'update', 'destroy', 'edit'])
