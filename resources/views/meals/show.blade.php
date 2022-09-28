@@ -1,13 +1,24 @@
 <x-app-layout>
     <div class="container lg:w-3/4 md:w-4/5 w-11/12 mx-auto my-8 px-8 py-4 bg-white shadow-md">
-        {{-- @if (session('notice'))
+        {{-- 食事記録登録のフラッシュメッセージ
+            @if (session('notice'))
             <div class="bg-blue-100 border-blue-500 text-blue-700 border-l-4 p-4 my-2">
                 {{ session('notice') }}
             </div>
         @endif --}}
         <x-flash-message :message="session('notice')" />
 
-        {{-- @if ($errors->any())
+        {{-- LikeController お気に入りに登録 解除のフラッシュメッセージ
+        上記を真似てflash-like-message.bladeに記載 
+            @if (session('success'))
+            <div class="bg-blue-100 border-blue-500 text-blue-700 border-l-4 p-4 my-2">
+                {{ session('success') }}
+            </div>
+        @endif --}}
+        <x-flash-message :message="session('success')" />
+
+        {{-- エラーのフラッシュメッセージ 
+            @if ($errors->any())
             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
                 <p>
                     <b>{{ count($errors) }}件のエラーがあります。</b>
@@ -40,6 +51,7 @@
                     class="text-red-400 font-bold">{{ date('Y-m-d H:i:s', strtotime('-1 day')) < $meal->created_at ? 'NEW' : '' }}</span>
                 記事作成日：{{ $meal->created_at }}
             </p>
+            <hr class="my-4">
             {{-- 画像 --}}
             {{-- 変更前① <img src="{{ Storage::url('images/meals/' . $meal->image) }}"> 
             Meal.php Mealモデルに登録
@@ -50,32 +62,41 @@
             {{-- public function getImageUrlAttribute()
             {return Storage::url('images/meals/' . $this->image); --}}
             <img src="{{ $meal->image_url }}" alt="" class="mb-4">
+            <hr class="my-4">
             <p class="text-gray-700 text-base">{!! nl2br(e($meal->body)) !!}</p>
-            <br>
+            <hr class="my-4">
 
-            {{-- お気に入り https://qiita.com/phper_sugiyama/items/9a4088d1ca816a7e3f29--}}
+            {{-- お気に入り https://qiita.com/phper_sugiyama/items/9a4088d1ca816a7e3f29 --}}
             <div>
                 {{-- ②お気に入りボタン --}}
-                <div>
-                    @if ($meal->is_liked_by_auth_user())
-                        <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}" 
-                        class="bg-pink-400 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2">
-                            お気に入り削除
-                        {{--カウントはボタンにつけない <span class="badge">{{ $meal->likes->count() }}</span> --}}
-                        </a>
-                    @else
-                        <a href="{{ route('meals.like', ['id' => $meal->id]) }}" 
-                        class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2">
+                @auth
+                    <div>
+                     {{--  @can('update', $post)  // 自分が投稿した記事の場合
+                    @else // 他人が投稿した記事の場合または非ログインの場合 @endcan --}}
+                    {{-- https://blog.capilano-fw.com/?p=7231#i --}}
+                    @can('update', $meal)
+                    <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}" 
+                        class="bg-pink-400 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
+                        :disabled="hasMyLike(u.likes)">
+                        お気に入り解除
+                    </a>
+                    @elsecan('delete', $meal) 
+                    <a href="{{ route('meals.like', ['id' => $meal->id]) }}" 
+                        class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
+                        :disabled="hasMyLike(u.likes)"> 
                             お気に入り
-                        {{--カウントはボタンにつけない <span class="badge">{{ $meal->likes->count() }}</span> --}}
                         </a>
-                    @endif
-                    <br>
-                    <br>
+                    @endcan
 
-                {{-- ①お気に入り数の表示 --}}
-                    <p class="text-blue-600/100 font-bold">お気に入り数：{{ $meal->likes->count() }}</p> 
-                </div>
+                        </a>
+                    {{-- ①お気に入り数の表示 --}}
+                    <p class="mt-2 mb-xl-4 display:flex flex-wrap:wrap text-sm mb-2 md:text-base font-normal">
+                    <span class="text-blue-600 font-bold">お気に入り数：{{ $meal->likes->count() }}</span>
+                    </div>
+
+                    
+                @endauth
+
             </div>
         </article>
 
@@ -102,6 +123,7 @@
                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20">
                 </form>
             @endcan
+
 
         </div>
     </div>

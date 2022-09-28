@@ -35,8 +35,10 @@
                         </p>
                         <img class="w-full mb-2" src="{{ $meal->image_url }}" alt="">
                         <p class="text-gray-700 text-base">{{ Str::limit($meal->body, 50) }}</p>                        
-                        {{-- お気に入り数の表示 --}}
-                        <p class="text-blue-600/100 font-bold">お気に入り数：{{ $meal->likes->count() }}</p>
+                        {{-- ①お気に入り数の表示 --}}
+                    <p class="mt-2 mb-xl-4 display:flex flex-wrap:wrap text-sm mb-2 md:text-base font-normal">
+                    <span class="text-blue-600 font-bold">お気に入り数：{{ $meal->likes->count() }}</span>
+                
                     </a>
                 </article>
             @endforeach

@@ -52,12 +52,21 @@ class Meal extends Model
     public function is_liked_by_auth_user()
     {
     $id = Auth::id();
+    // 要素が0個の配列を作成 https://www.tohoho-web.com/js/array.htm#newArray
     $likers = array();
     foreach($this->likes as $like) {
+    // array_pushを使って配列の最後に1つ以上の要素を追加。プログラム途中で要素数が可変する際などに使用。 
+    // https://magazine.techacademy.jp/magazine/26812
+    // array_push(追加先の配列,追加する値1,追加する値2・・・)
+    // 配列likersに、$like->user_idを追加
     array_push($likers, $like->user_id);
     }
-
-    if (in_array($id, $likers)) {
+    
+    // 配列likerの中に要素id が含まれれば
+    // in_array https://qiita.com/ritukiii/items/3a6add378ae089ab5d70
+    // 第三引数のstrictはデフォルトでfalseになっているため、型比較までしない。
+    // in_array使うときは黙って第三引数にtrueを指定しなさい
+    if (in_array($id, $likers, true)) {
         // true:Likeがついてる
         return true;
     } else {
