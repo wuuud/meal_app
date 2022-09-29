@@ -16,6 +16,7 @@ class Meal extends Model
         'title',
         'body',
         'category_id',
+        // 'image',
     ];
 
     public function user()
@@ -25,7 +26,12 @@ class Meal extends Model
 
     public function likes()
     {
-        return $this->hasMany(like::class, 'meal_id');
+        return $this->hasMany(like::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function getImageUrlAttribute()

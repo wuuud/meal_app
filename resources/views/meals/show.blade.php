@@ -68,36 +68,35 @@
 
             {{-- お気に入り https://qiita.com/phper_sugiyama/items/9a4088d1ca816a7e3f29 --}}
             <div>
-                {{-- ②お気に入りボタン --}}
-                @auth
-                    <div>
-                     {{--  @can('update', $post)  // 自分が投稿した記事の場合
+
+                {{-- ①お気に入り数の表示 --}}
+                <p class="mt-2 mb-xl-4 display:flex flex-wrap:wrap text-sm mb-2 md:text-base font-normal">
+                    <span class="text-blue-600 font-bold">お気に入り数：{{ $meal->likes->count() }}</span>
+            </div>
+
+            {{-- ②お気に入りボタン --}}
+            @auth
+                <div>
+                    {{--  @can('update', $post)  // 自分が投稿した記事の場合
                     @else // 他人が投稿した記事の場合または非ログインの場合 @endcan --}}
                     {{-- https://blog.capilano-fw.com/?p=7231#i --}}
                     @can('update', $meal)
-                    <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}" 
-                        class="bg-pink-400 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
-                        :disabled="hasMyLike(u.likes)">
-                        お気に入り解除
-                    </a>
-                    @elsecan('delete', $meal) 
-                    <a href="{{ route('meals.like', ['id' => $meal->id]) }}" 
-                        class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
-                        :disabled="hasMyLike(u.likes)"> 
+                        <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}"
+                            class="bg-pink-400 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
+                            :disabled="hasMyLike(u.likes)">
+                            お気に入り解除
+                        </a>
+                    @elsecan('delete', $meal)
+                        <a href="{{ route('meals.like', ['id' => $meal->id]) }}"
+                            class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
+                            :disabled="hasMyLike(u.likes)">
                             お気に入り
                         </a>
                     @endcan
 
-                        </a>
-                    {{-- ①お気に入り数の表示 --}}
-                    <p class="mt-2 mb-xl-4 display:flex flex-wrap:wrap text-sm mb-2 md:text-base font-normal">
-                    <span class="text-blue-600 font-bold">お気に入り数：{{ $meal->likes->count() }}</span>
-                    </div>
-
-                    
-                @endauth
-
-            </div>
+                    </a>
+                </div>
+            @endauth
         </article>
 
         <div class="flex flex-row text-center my-4">

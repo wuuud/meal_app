@@ -23,14 +23,13 @@ class MealRequest extends FormRequest
      */
     public function rules()
     {
-
-
         $route = $this->route()->getName();
 
         $rule = [
             'title' => 'required|string|max:50',
             'body' => 'required|string|max:200',
             'category_id' => 'required',
+            
             // edit時は不要のため
             // 'image' => 'required|file|image|mimes:jpg,png',
         ];

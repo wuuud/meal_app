@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use Illuminate\Http\Request;
 use App\Models\Meal;
-use App\Http\Requests\LikeRequest;
 
 class LikeController extends Controller
 {
@@ -24,16 +23,16 @@ class LikeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\LikeRequest  $request
+     * @param  \App\Http\Requests\Request  $request
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function like(LikeRequest $request, Meal $meal, Like $like)
+    public function like(Request $request, Meal $meal, Like $like)
     {
         //なりすましを確認         updateの内容は＄like
         if ($request->user()->cannot('update', $like)) {
             return redirect()
-                ->route('meals.show',  [$meal->meal_id])
+                ->route('meals.index')
                 ->withErrors('自分以外のお気に入りは更新できません');
         }
         // storeから変更
@@ -47,7 +46,7 @@ class LikeController extends Controller
                 ->withErrors($e->getMessage());
         }
         return redirect()
-                ->route('meals.show',  [$meal->meal_id])
+                ->route('meals.index')
                 ->with('success', 'お気に入りに登録しました！');
 
         // https://katsusand.dev/posts/laravel-save-data-db/
@@ -75,7 +74,7 @@ class LikeController extends Controller
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function unlike(LikeRequest $request, Meal $meal, Like $like)
+    public function unlike(Request $request, Meal $meal, Like $like)
     {
        //上記はRequest $requestでバリデーションは
         //                   ’delete’でpolicyのdeleteに飛んでいってる
@@ -83,10 +82,11 @@ class LikeController extends Controller
         // できない場合はtrueで実行
         if ($request->user()->cannot('delete', $like)) {
             return redirect()
-                ->route('meals.show', [$like->meal_id()])
+            // @can('update', $meal) 
+            // <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}" 
+                ->route('meals.index')
                 ->withErrors('自分以外のお気に入りは解除できません');
         }
-        
 
         // トランザクションなし
         try {
@@ -97,7 +97,7 @@ class LikeController extends Controller
                 ->withErrors($e->getMessage());
         }
         return redirect()
-                ->route('meals.show',  [$like->meal_id()])
+                ->route('meals.index')
                 ->with('success', 'お気に入りを削除しました');
     // whereメソッドを呼び出し条件を指定した上でfirstメソッドを呼ぶ
     // $like = Like::where('meal_id', $id)

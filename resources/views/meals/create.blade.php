@@ -29,11 +29,12 @@
                     required placeholder="タイトル" value="{{ old('title') }}">
             </div>
             {{-- ラジオボタン作成https://qiita.com/yusuke___web/items/9ee65ef9f25045c12284 --}}
-            <div class="form-group">
+            {{--                                       既定で一つを checked --}}
+            {{-- <div class="form-group">
                 <label>{{ __('カテゴリー') }}
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release1" value="野菜"
-                            {{--                                       既定で一つを checked --}}
+                            
                             {{ old('category_id') == '野菜' ? 'checked' : '' }} checked>
                         <label for="release1" class="form-check-label">野菜</label>
                     </div>
@@ -48,7 +49,22 @@
                         <label for="release3" class="form-check-label">炭水化物</label>
                     </div>
                 </label>
+            </div> --}}
+
+            <div class="form-group">
+                <label for="category" class="block text-gray-700 text-sm mb-2">
+                    カテゴリー
+                </label>
+                @foreach ( $categories as $category )
+                    <p>
+                    {{-- label forとinput idが同じなら、クリック時に反応 --}}
+                    <input type="radio" name="category" id="category{{ $category->id }}" 
+                        value="{{ $category->id }}" required>
+                    <label for="category{{ $category->id }}">{{ $category->list }}</label>
+                    </p>
+                @endforeach
             </div>
+
             <br>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm mb-2" for="body">
@@ -62,6 +78,7 @@
                 <label class="block text-gray-700 text-sm mb-2" for="image">
                     食事の画像
                 </label>
+                {{-- ファイルを渡すため。typeはfile --}}
                 <input type="file" name="image" class="border-gray-300">
             </div>
             <input type="submit" value="登録"

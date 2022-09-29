@@ -22,16 +22,16 @@
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="title">
+                <label class="block text-gray-700 text-sm mb-2" for="title" placeholder="タイトル">
                     タイトル
                 </label>
                 <input type="text" name="title"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
-                    required placeholder="タイトル" value="{{ old('title', $meal->title) }}">
+                    placeholder="タイトル" value="{{ old('title', $meal->title) }}">
             </div>
 
             {{-- ラジオボタンhttps://qiita.com/yusuke___web/items/9ee65ef9f25045c12284--}}
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label>{{ __('カテゴリー') }}
                     <div class="form-check form-check-inline">
                         <input type="radio" name="category_id" class="form-check-input" id="release1" value="野菜"
@@ -49,16 +49,31 @@
                         <label for="release3" class="form-check-label">炭水化物</label>
                     </div>
                 </label>
+            </div>  --}}
+            {{-- https://qiita.com/gyu_outputs/items/d0ba64928972b7b47582 --}}
+            <div class="form-group">
+                <label for="category" class="block text-gray-700 text-sm mb-2">
+                    カテゴリー
+                </label>
+                @foreach ($categories as $category)
+                <div class="form-check form-check-inline text-gray-700 text-sm mb-2">
+                    <p>
+                    <input type="radio" name="category_id" id="category{{ $category->id }}" class="form-check-input" 
+                            value= "{{ $category->id }}"
+                            @if (old("category_id", $meal->category_id) == $category->id) checked @endif />
+                    <label for="category{{ $category->id }}">{{ $category->list }}</label>
+                    </p>
+                </div>
+                @endforeach
             </div>
-
             {{-- 詳細 --}}
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="body">
+                <label class="block text-gray-700 text-sm mb-2" for="body" placeholder="詳細">
                     詳細
                 </label>
                 <textarea name="body" rows="10"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
-                    required placeholder="詳細">{{ old('body', $meal->body) }}</textarea>
+                    placeholder="詳細">{{ old('body', $meal->body) }}</textarea>
             </div>
             {{-- ①お気に入り数の表示 --}}
                     <p class="mt-2 mb-xl-4 display:flex flex-wrap:wrap text-sm mb-2 md:text-base font-normal">
@@ -66,8 +81,9 @@
             {{-- 画像 --}}
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm mb-2" for="image">
-                    食事の画像
+                    食事用の画像
                 </label>
+                {{-- $meal->image_urlを使って読み込み --}}
                 <img src="{{ $meal->image_url }}" alt="" class="mb-4 md:w-2/5 sm:auto">
                 <input type="file" name="image" class="border-gray-300">
             </div>
