@@ -23,6 +23,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::resource('meals', MealController::class)
+    ->only(['store', 'create', 'update', 'destroy', 'edit'])
+    ->middleware('auth');
+
+Route::resource('meals', MealController::class)
+    ->only(['show', 'index']);
 
 Route::get('/meals/like/{id}', [LikeController::class, 'like'])
     ->middleware('auth')
@@ -31,12 +37,5 @@ Route::get('/meals/like/{id}', [LikeController::class, 'like'])
 Route::get('/meals/unlike/{id}', [LikeController::class, 'unlike'])
     ->middleware('auth')
     ->name('meals.unlike');
-
-Route::resource('meals', MealController::class)
-    ->only(['store', 'create', 'update', 'destroy', 'edit'])
-    ->middleware('auth');
-
-Route::resource('meals', MealController::class)
-    ->only(['show', 'index']);
 
 require __DIR__ . '/auth.php';
