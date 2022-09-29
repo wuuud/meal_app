@@ -80,20 +80,34 @@
                     {{--  @can('update', $post)  // 自分が投稿した記事の場合
                     @else // 他人が投稿した記事の場合または非ログインの場合 @endcan --}}
                     {{-- https://blog.capilano-fw.com/?p=7231#i --}}
-                    @can('update', $meal)
+                    @if($meal->is_liked_by_auth_user())
+                        <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}"
+                            class="bg-pink-400 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
+                            :disabled>
+                            {{-- ="hasMyLike(u.likes)" --}}
+                            お気に入り解除
+                        </a>
+                    @else
+                        <a href="{{ route('meals.like', ['id' => $meal->id]) }}"
+                            class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
+                            :disabled>
+                            お気に入り
+                        </a>
+                    @endif
+                    {{-- @can('update', $meal)
                         <a href="{{ route('meals.unlike', ['id' => $meal->id]) }}"
                             class="bg-pink-400 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
                             :disabled="hasMyLike(u.likes)">
                             お気に入り解除
                         </a>
-                    @elsecan('delete', $meal)
+                    @endcan
+                    @can('delete', $meal) 
                         <a href="{{ route('meals.like', ['id' => $meal->id]) }}"
                             class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-20 mr-2"
                             :disabled="hasMyLike(u.likes)">
                             お気に入り
                         </a>
-                    @endcan
-
+                    @endcan --}}
                     </a>
                 </div>
             @endauth
