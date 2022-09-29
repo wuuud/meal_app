@@ -55,12 +55,13 @@
                 <label for="category" class="block text-gray-700 text-sm mb-2">
                     カテゴリー
                 </label>
-                @foreach ( $categories as $category )
+                @foreach ($categories as $category)
                     <p>
-                    {{-- label forとinput idが同じなら、クリック時に反応 --}}
-                    <input type="radio" name="category" id="category{{ $category->id }}" 
-                        value="{{ $category->id }}" required>
-                    <label for="category{{ $category->id }}">{{ $category->list }}</label>
+                        {{-- label forとinput idが同じなら、クリック時に反応 --}}
+                        <label for="category"></label>
+                        <label><input type="radio" name="list" id="category"
+                                value="{{ $category->id }}">{{ $category->list }}
+                        </label>
                     </p>
                 @endforeach
             </div>

@@ -47,12 +47,12 @@ class MealController extends Controller
      */
     public function store(MealRequest $request)
     {
+        
         $meal = new Meal($request->all());
         // 1.ユーザーID
         $meal->user_id = $request->user()->id;
         // 2.カテゴリーID
-        // $meal->category_id = $request->category()->id;
-        
+        $meal->category_id = $request->list;
         // 3.画像
         $file = $request->file('image');
         $meal->image = self::createFileName($file);
@@ -115,12 +115,15 @@ public function edit(meal $meal)
  */
 public function update(MealRequest $request, meal $meal)
 {
-
+    
     // なしすまし対策
     if ($request->user()->cannot('update', $meal)) {
         return redirect()->route('meals.show', $meal)
             ->withErrors('自分の記事以外は更新できません');
     }
+    // 2.カテゴリーID input name＝listに合わせて記載
+    $meal->category_id = $request->list;
+        
     // 3.画像
     // updateされているか
         $file = $request->file('image');

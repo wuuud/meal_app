@@ -28,7 +28,7 @@ class MealRequest extends FormRequest
         $rule = [
             'title' => 'required|string|max:50',
             'body' => 'required|string|max:200',
-            'category_id' => 'required',
+            'list' => 'required',
             
             // edit時は不要のため
             // 'image' => 'required|file|image|mimes:jpg,png',

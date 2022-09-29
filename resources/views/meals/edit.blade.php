@@ -58,7 +58,7 @@
                 @foreach ($categories as $category)
                 <div class="form-check form-check-inline text-gray-700 text-sm mb-2">
                     <p>
-                    <input type="radio" name="category_id" id="category{{ $category->id }}" class="form-check-input" 
+                    <input type="radio" name="list" id="category{{ $category->id }}" class="form-check-input" 
                             value= "{{ $category->id }}"
                             @if (old("category_id", $meal->category_id) == $category->id) checked @endif />
                     <label for="category{{ $category->id }}">{{ $category->list }}</label>

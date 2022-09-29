@@ -131,6 +131,7 @@ return [
     'attributes'           => [
         'title' => 'タイトル',
         'body' => '詳細',
+        'list' => 'カテゴリー',
         'category_id' => 'カテゴリー',
         'image' => '食事の画像',
 
