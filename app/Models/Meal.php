@@ -69,9 +69,8 @@ class Meal extends Model
     }
     // 配列likerの中に要素id が含まれれば
     // in_array https://qiita.com/ritukiii/items/3a6add378ae089ab5d70
-    // 第三引数のstrictはデフォルトでfalseになっているため、型比較までしない。
-    // in_array使うときは黙って第三引数にtrueを指定しなさい
-    if (in_array($id, $likers, true)) {
+    if (in_array($id, $likers)) {
+    // dd($likers);
         // true:Likeがついてる
         return true;
     } else {
