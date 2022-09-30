@@ -60,7 +60,7 @@
                         {{-- label forとinput idが同じなら、クリック時に反応 --}}
                         <label for="category"></label>
                         <label><input type="radio" name="list" id="category"
-                                value="{{ $category->id }}">{{ $category->list }}
+                            value="{{ $category->id }}">{{ $category->list }}
                         </label>
                     </p>
                 @endforeach
